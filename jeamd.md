@@ -134,7 +134,7 @@
     GROUP BY t.name
     HAVING COUNT(p.id) > (SELECT AVG(player_count) FROM (SELECT COUNT(id) AS player_count FROM players GROUP BY team_id) AS avg_count);
     ```
-    ![](img/) 
+    ![](img) 
 
     Этот запрос выводит названия команд и количество игроков в каждой команде, но только для тех команд, у которых количество игроков превышает среднее значение по всем командам.
 7. ## Оконные функции
@@ -261,5 +261,5 @@
     )
     SELECT * FROM team_players;
     ```
-    ![](IMG/with.png)
+    ![](img/with.png)
     Этот запрос создает временную таблицу `team_players`, которая содержит название команды и имя игрока, а затем выводит все записи из этой временной таблицы.
