@@ -116,27 +116,29 @@
     ### В SELECT
 
     ```sql
-    SELECT t.name, 
-       (SELECT AVG(YEAR(NOW()) - YEAR(p.birthdate)) 
-        FROM players p 
-        WHERE p.team_id = t.id) AS avg_age
-    FROM teams t;
+    SELECT * FROM players
+    WHERE id IN (
+        SELECT id
+        FROM teams
+        WHERE country = 'Россия');
     ```
-    ![](img/) 
+    ![](img/selectvloj.png) 
 
-    Этот запрос выводит название каждой команды и средний возраст игроков в этой команде.
+    Этот запрос выберет всех игроков из команд, которые находятся в России.
 
     ### В WHERE
     ```sql
-    SELECT t.name, COUNT(p.id) AS player_count
-    FROM teams t
-    JOIN players p ON t.id = p.team_id
-    GROUP BY t.name
-    HAVING COUNT(p.id) > (SELECT AVG(player_count) FROM (SELECT COUNT(id) AS player_count FROM players GROUP BY team_id) AS avg_count);
+    SELECT * FROM coaches
+    WHERE id IN (
+        SELECT team_id
+        FROM matches
+        WHERE match_date > '2020-01-01'
+    );
     ```
-    ![](img) 
+    ![](img/wherevloj.png) 
 
-    Этот запрос выводит названия команд и количество игроков в каждой команде, но только для тех команд, у которых количество игроков превышает среднее значение по всем командам.
+    Этот запрос выберет всех тренеров из команд, которые провели матчи после 1 января 2020 года.
+
 7. ## Оконные функции
     ## Агрегатные функции
     ```sql
@@ -168,7 +170,7 @@
         LEAD(result) OVER (PARTITION BY id ORDER BY match_date) AS next_goals
     FROM matches;
     ```
-  ![](img/ll.png) 
+    ![](img/ll.png) 
 
 Этот запрос выводит дату матча, идентификатор команды, количество забитых голов в текущем матче, а также предыдущее и следующее количество забитых голов командой в хронологическом порядке.
 
